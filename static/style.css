@@ -13,6 +13,9 @@
     --line: #3a3128;
     --selection-fg: #121110;
     --selection-bg: #ffb000;
+    /* VHS 風の RGB にじみ */
+    --rgb-1: rgba(251, 0, 231, 0.6);
+    --rgb-2: rgba(0, 233, 235, 0.6);
 }
 
 * { box-sizing: border-box; }
@@ -33,6 +36,20 @@ main {
     max-width: 36rem;
     margin: 0 auto;
     padding: 15vh 16px 2rem;
+}
+
+/* ===== RGB にじみ（sankoku の VHS Retro を参考） ===== */
+main { animation: rgbText 2s steps(9) infinite alternate; }
+
+@keyframes rgbText {
+    0%, 55% { text-shadow: 0 0 0.6px var(--rgb-1), 0 0 0.6px var(--rgb-2); }
+    45% { text-shadow: 0.5px 0 0.3px var(--rgb-1), -0.5px 0 0.3px var(--rgb-2); }
+    90% { text-shadow: -0.5px 0 0.3px var(--rgb-1), 0.5px 0 0.3px var(--rgb-2); }
+    100% { text-shadow: 0.5px 0 0.3px var(--rgb-1), 0 -0.5px 0.3px var(--rgb-2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    main { animation: none; }
 }
 
 h1 { font-size: 1.5rem; margin: 0; }
