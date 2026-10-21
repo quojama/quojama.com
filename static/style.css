@@ -1,18 +1,18 @@
 /*
  * quojama.com
- * sankoku（https://sankoku.club/）の配色を参考にした、テキストだけのシンプルなページ。
+ * テキストだけのシンプルなページ（夜の藍色の背景に、ピンクと水色のアクセント）。
  * 色はこの :root の変数だけで管理する（他の場所に色を直書きしない）。
  */
 :root {
-    --bg: #121110;
-    --fg: #e8e2d8;
-    --accent: #ffb000;
-    --link: #e8944a;
-    --link-hover: #ffd166;
-    --muted: #8a7f70;
-    --line: #3a3128;
-    --selection-fg: #121110;
-    --selection-bg: #ffb000;
+    --bg: #14213d;
+    --fg: #f1ede4;
+    --accent: #ff8fab;
+    --link: #8ecae6;
+    --link-hover: #ffd6e0;
+    --muted: #8d9bb8;
+    --line: #2c3c63;
+    --selection-fg: #14213d;
+    --selection-bg: #ff8fab;
     /* RGB にじみ（pistachio-on-vss の vhs.css と同じ色） */
     --vhs-white: rgba(255, 255, 255, 0.6);
     --vhs-cream: rgba(255, 255, 235, 0.7);
@@ -25,22 +25,26 @@
 
 * { box-sizing: border-box; }
 
+/* 文字の大きさは sankoku（html 20px）に近づけた 18px。rem はこの値が基準 */
+html { font-size: 18px; }
+
 body {
     margin: 0;
     background: var(--bg);
     color: var(--fg);
     /* 日本語対応の鉛筆・教科書風フォント Klee One。読み込めないときは OS の日本語フォント */
     font-family: "Klee One", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.9;
 }
 
 ::selection { color: var(--selection-fg); background: var(--selection-bg); }
 
 main {
-    max-width: 36rem;
+    /* sankoku と同じく幅を狭めて真ん中に寄せる */
+    max-width: 28rem;
     margin: 0 auto;
-    padding: 15vh 16px 2rem;
+    padding: 12vh 16px 2rem;
 }
 
 /* ===== RGB にじみ =====
@@ -123,6 +127,6 @@ footer {
     margin-top: 4rem;
     text-align: right;
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     line-height: 1.8;
 }
