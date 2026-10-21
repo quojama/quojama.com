@@ -29,8 +29,8 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--fg);
-    /* 日本語も等幅で表示できる M PLUS 1 Code。読み込めないときは OS の日本語フォント */
-    font-family: "M PLUS 1 Code", ui-monospace, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, monospace;
+    /* 日本語対応の丸ゴシック Zen Maru Gothic。読み込めないときは OS の日本語フォント */
+    font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
     font-size: 16px;
     line-height: 1.9;
 }
