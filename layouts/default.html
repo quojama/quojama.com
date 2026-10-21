@@ -4,17 +4,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{site_title}}</title>
+    <title>{{#title}}{{title}} - {{/title}}{{site_title}}</title>
     <meta name="description" content="{{site_description}}" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="{{site_title}}" />
+    <meta property="og:title" content="{{#title}}{{title}} - {{/title}}{{site_title}}" />
     <meta property="og:description" content="{{site_description}}" />
     <meta property="og:url" content="{{base_url}}" />
     <meta name="theme-color" content="#121110" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body>
@@ -22,6 +22,7 @@
         <header>
             <h1><a href="/">quojama</a></h1>
             <p class="tagline">{{site_description}}</p>
+            <nav><a href="/about/">About</a> <a href="/portfolio/">Portfolio</a> <a href="/blog/">Blog</a></nav>
         </header>
 
         <!-- @CONTENTS -->

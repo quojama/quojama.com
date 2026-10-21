@@ -128,3 +128,20 @@ footer {
     color: var(--muted);
     font-size: 0.8rem;
 }
+
+/* ===== 旧 WordPress から移した About・Portfolio・Blog ===== */
+nav { display: flex; gap: 1rem; margin: -2rem 0 2.5rem; }
+
+main img { max-width: 100%; height: auto; }
+main ol { padding-left: 1.5em; }
+.breadcrumb, .date { color: var(--muted); font-size: 0.8rem; margin: 0; }
+.breadcrumb + h2 { margin-top: 0.25rem; }
+time { color: var(--muted); font-size: 0.8rem; margin-right: 0.5rem; }
+
+.portfolio { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 1.5rem 1rem; }
+.portfolio li::before { content: none; }
+.portfolio a { display: block; font-size: 0.8rem; line-height: 1.5; }
+.portfolio img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; margin-bottom: 0.4rem; }
+
+.gallery { display: grid; gap: 1rem; }
+.gallery img { display: block; width: 100%; }

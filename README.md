@@ -1,6 +1,6 @@
 # quojama.com
 
-https://quojama.com/ の個人サイト。テキストだけの1ページ。
+https://quojama.com/ の個人サイト。旧 WordPress（ロリポップ）から About・Portfolio・Blog を移してきた。
 
 - 静的サイトジェネレーター: [VSS](https://github.com/veltiosoft/vss)
 - ホスティング: GitHub Pages（`main` に push → Actions でビルド → 公開）
@@ -27,6 +27,10 @@ make serve       # http://localhost:8080 でプレビュー
 ## 更新
 
 - リンク: `index.md`
+- About: `about/index.md`
+- Portfolio: 一覧は `portfolio/index.md`、各作品は `portfolio/<slug>/index.md`
+- Blog: 一覧は `blog/index.md`、各記事は `<slug>/index.md`（旧 WordPress と同じ URL）
+- 画像: `static/wp-content/uploads/`（旧 WordPress と同じパス）
 - テンプレート: `layouts/default.html`
 - 見た目: `static/style.css`（色は `:root` の変数で管理）
 
