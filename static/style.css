@@ -101,10 +101,8 @@ main {
     main { animation: none; }
 }
 
-h1 { font-size: 1.5rem; margin: 0; }
+h1 { font-size: 1.5rem; margin: 0 0 2.5rem; }
 h1 a:any-link { color: var(--accent); text-decoration: none; }
-
-.tagline { color: var(--muted); margin: 0 0 2.5rem; }
 
 h2 {
     font-size: 1rem;
