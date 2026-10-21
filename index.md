@@ -11,7 +11,7 @@ Yuki Koyama 1987
 ## Social
 
 * 📸[Instagram](https://www.instagram.com/quojama/)
-* [X](https://x.com/quojama)
+* 🌨️[X](https://x.com/quojama)
 * 🕷️[GitHub](https://github.com/quojama)
 * 🎞️[Filmarks](https://filmarks.com/users/quojama)
 * 🏃[Strava](https://www.strava.com/athletes/186208570)
