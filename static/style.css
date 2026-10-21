@@ -1,45 +1,141 @@
+/*
+ * quojama.com
+ * デザインは pistachiostudio/sankoku（https://sankoku.club/）を参考にしている。
+ * 色はこの :root の変数だけで管理する（他の場所に色を直書きしない）。
+ */
 :root {
-    --bg: #fafaf7;
-    --fg: #1a1a1a;
-    --muted: #888;
-    --link: #1a1a1a;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #111;
-        --fg: #e8e8e3;
-        --muted: #777;
-        --link: #e8e8e3;
-    }
+    --bg: #0d0a08;
+    --fg: #ffb000;
+    --title: #ff8c00;
+    --link: #e8944a;
+    --link-hover: #ffd166;
+    --accent: #ff5f56;
+    --muted: #8a6a4a;
+    --line: #4a2e12;
+    --selection-fg: #1a1210;
+    --selection-bg: #ff8c00;
+    --scanline: rgba(255, 255, 255, 0.04);
+    /* VHS 風のにじみ */
+    --rgb-1: rgba(251, 0, 231, 0.6);
+    --rgb-2: rgba(0, 233, 235, 0.6);
 }
 
 * { box-sizing: border-box; }
+
+html { font-size: 20px; }
 
 body {
     margin: 0;
     background: var(--bg);
     color: var(--fg);
-    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size: 16px;
-    line-height: 1.8;
+    font-family: "VT323", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    line-height: 1.4;
 }
 
-main, footer {
-    max-width: 36rem;
+::selection { color: var(--selection-fg); background: var(--selection-bg); }
+
+main {
+    max-width: 500px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 2.2rem 16px 2rem;
 }
 
-main { padding-top: 15vh; }
+/* ===== VHS / CRT ===== */
+.vhs { animation: rgbText 2s steps(9) infinite alternate; }
 
-h1 { font-size: 1.5rem; margin: 0 0 2rem; }
-h1 a { text-decoration: none; }
-h2 { font-size: 1rem; font-weight: normal; color: var(--muted); margin: 0 0 1rem; }
+@keyframes rgbText {
+    0%, 55% { text-shadow: 0 0 0.6px var(--rgb-1), 0 0 0.6px var(--rgb-2); }
+    45% { text-shadow: 0.5px 0 0.3px var(--rgb-1), -0.5px 0 0.3px var(--rgb-2); }
+    90% { text-shadow: -0.5px 0 0.3px var(--rgb-1), 0.5px 0 0.3px var(--rgb-2); }
+    100% { text-shadow: 0.5px 0 0.3px var(--rgb-1), 0 -0.5px 0.3px var(--rgb-2); }
+}
 
-ul { list-style: none; padding: 0; margin: 0; }
+.lines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 300;
+    background: linear-gradient(to bottom, transparent 50%, var(--scanline) 51%);
+    background-size: 100% 3px;
+    animation: flicker 8s linear infinite;
+}
 
-a { color: var(--link); text-underline-offset: 0.2em; }
-a:hover { text-decoration-thickness: 2px; }
+@keyframes flicker {
+    0%, 100% { opacity: 0.9; }
+    20% { opacity: 0.5; }
+    50% { opacity: 1; }
+    80% { opacity: 0.7; }
+}
 
-footer { padding-top: 4rem; padding-bottom: 2rem; color: var(--muted); font-size: 0.8rem; }
+/* ===== HEADER ===== */
+.doggo {
+    color: var(--accent);
+    animation: blink 0.3s linear infinite;
+    margin-right: 0.3rem;
+}
+
+@keyframes blink { 50% { opacity: 0.4; } }
+
+.typew { color: var(--fg); word-break: break-all; }
+
+.caret::after { content: "]"; color: pink; animation: blink 1s steps(1) infinite; }
+.typek .caret::after { content: "•"; }
+
+h1 {
+    font-size: 5rem;
+    line-height: 1;
+    margin: 1.2rem 0 0.4rem;
+    letter-spacing: 0.02em;
+}
+
+#title a:any-link { color: var(--title); text-decoration: none; }
+#title a:hover { color: var(--link-hover); }
+
+.tagline {
+    font-size: 1.3rem;
+    margin: 0 0 1rem;
+    min-height: 1.4em;
+    text-transform: uppercase;
+}
+
+/* ===== CONTENTS ===== */
+h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; }
+
+hr {
+    border: none;
+    border-top: 1.5px solid var(--line);
+    margin: 1rem 0;
+}
+
+p { margin: 0.2rem 0 0.3rem; }
+
+ul {
+    list-style-type: square;
+    margin: 0 0 1em;
+    padding-left: 1.2rem;
+}
+
+li::marker { color: var(--muted); }
+
+li > a::before { content: "=> "; }
+
+a:any-link { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); }
+
+/* ===== FOOTER ===== */
+footer {
+    margin-top: 4rem;
+    text-align: right;
+    font-size: 0.7rem;
+    color: var(--fg);
+}
+
+/* ===== SMART PHONE ===== */
+@media screen and (max-width: 768px) {
+    h1 { font-size: 4rem; }
+    .tagline, h2 { font-size: 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vhs, .lines, .doggo, .caret::after { animation: none; }
+}
