@@ -20,8 +20,25 @@ setup-mac: clean
 	tar -xvf vss_darwin_arm64.tar.gz
 	chmod +x vss
 
+# for macOS (Intel)
+setup-mac-intel: clean
+	curl -fsSLO $(VSS_RELEASE_URL)/vss_darwin_amd64.tar.gz
+	tar -xvf vss_darwin_amd64.tar.gz
+	chmod +x vss
+
+setup-win: clean
+	curl -fsSLO $(VSS_RELEASE_URL)/vss_windows_amd64.zip
+	unzip vss_windows_amd64.zip
+
 build:
 	./vss build
 
+build-win:
+	./vss.exe build
+
+# http://localhost:8080 でプレビュー
 serve:
 	./vss serve
+
+serve-win:
+	./vss.exe serve
