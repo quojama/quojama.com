@@ -1,0 +1,45 @@
+:root {
+    --bg: #fafaf7;
+    --fg: #1a1a1a;
+    --muted: #888;
+    --link: #1a1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #111;
+        --fg: #e8e8e3;
+        --muted: #777;
+        --link: #e8e8e3;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+main, footer {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+main { padding-top: 15vh; }
+
+h1 { font-size: 1.5rem; margin: 0 0 2rem; }
+h1 a { text-decoration: none; }
+h2 { font-size: 1rem; font-weight: normal; color: var(--muted); margin: 0 0 1rem; }
+
+ul { list-style: none; padding: 0; margin: 0; }
+
+a { color: var(--link); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+footer { padding-top: 4rem; padding-bottom: 2rem; color: var(--muted); font-size: 0.8rem; }

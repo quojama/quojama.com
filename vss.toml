@@ -1,0 +1,9 @@
+site_title = "quojama"
+site_description = "Yuki Koyama aka quojama"
+base_url = "https://quojama.com/"
+
+[build]
+ignore_files = ["README.md", "AGENTS.md"]
+
+[build.markdown]
+allow_dangerous_html = true

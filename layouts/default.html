@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{site_title}}</title>
+    <meta name="description" content="{{site_description}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{site_title}}" />
+    <meta property="og:description" content="{{site_description}}" />
+    <meta property="og:url" content="{{base_url}}" />
+    <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+    <main>
+        <h1><a href="/">quojama</a></h1>
+
+        <!-- @CONTENTS -->
+        {{{contents}}}
+        <!-- /@CONTENTS -->
+    </main>
+
+    <footer>
+        &copy; <span id="copyright-year"></span> quojama
+        <script>document.getElementById("copyright-year").textContent = new Date().getFullYear();</script>
+    </footer>
+</body>
+
+</html>
