@@ -116,7 +116,8 @@ h2::before { content: "## "; }
 
 ul { list-style: none; padding: 0; margin: 0; }
 
-li::before { content: "- "; color: var(--muted); }
+/* 移行記事のポートフォリオ一覧（.portfolio のグリッド）には付けない */
+ul:not(.portfolio) > li::before { content: "- "; color: var(--muted); }
 
 a:any-link { color: var(--link); text-decoration: none; }
 a:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 0.2em; }
