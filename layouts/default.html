@@ -33,6 +33,61 @@
             <script>document.getElementById("copyright-year").textContent = new Date().getFullYear();</script>
         </footer>
     </main>
+    <!-- ===== フォント比較（一時的。フォントが決まったらこのブロックごと削除） ===== -->
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&family=M+PLUS+1+Code&family=DotGothic16&family=Stick&family=Dela+Gothic+One&family=RocknRoll+One&family=Reggae+One&family=Yusei+Magic&family=Klee+One&family=Zen+Kurenaido&family=Kaisei+Decol&family=Murecho&display=swap" rel="stylesheet" />
+    <div class="font-picker">
+        <label for="font-picker">font</label>
+        <select id="font-picker"></select>
+    </div>
+    <style>
+        .font-picker {
+            position: fixed;
+            right: 12px;
+            bottom: 12px;
+            z-index: 10;
+            padding: 6px 8px;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            color: var(--muted);
+            font: 12px/1.4 sans-serif;
+            animation: none;
+            text-shadow: none;
+        }
+        .font-picker select {
+            margin-left: 4px;
+            background: var(--bg);
+            color: var(--fg);
+            border: 1px solid var(--line);
+            font: inherit;
+        }
+    </style>
+    <script>
+        (function () {
+            var fonts = ["Zen Maru Gothic", "M PLUS 1 Code", "DotGothic16", "Stick", "Dela Gothic One", "RocknRoll One",
+                "Reggae One", "Yusei Magic", "Klee One", "Zen Kurenaido", "Kaisei Decol", "Murecho"];
+            var fallback = getComputedStyle(document.body).fontFamily.replace(/^"Zen Kurenaido",\s*/, "");
+            var select = document.getElementById("font-picker");
+            fonts.forEach(function (f, i) {
+                var o = document.createElement("option");
+                o.value = f;
+                o.textContent = (i + 1) + ". " + f;
+                select.appendChild(o);
+            });
+            function apply(f) {
+                var family = '"' + f + '", ' + fallback;
+                document.body.style.fontFamily = family;
+                select.value = f;
+            }
+            var saved = null;
+            try { saved = localStorage.getItem("font-picker"); } catch (e) {}
+            apply(fonts.indexOf(saved) > -1 ? saved : "Zen Kurenaido");
+            select.addEventListener("change", function () {
+                apply(select.value);
+                try { localStorage.setItem("font-picker", select.value); } catch (e) {}
+            });
+        })();
+    </script>
+    <!-- ===== /フォント比較 ===== -->
 </body>
 
 </html>
