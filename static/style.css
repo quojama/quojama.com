@@ -1,18 +1,19 @@
 /*
  * quojama.com
- * テキストだけのシンプルなページ（夜の藍色の背景に、ピンクと水色のアクセント）。
+ * テキストだけのシンプルなページ。配色は pistachio-on-vss の SETUPTOOLS テーマから。
  * 色はこの :root の変数だけで管理する（他の場所に色を直書きしない）。
  */
 :root {
-    --bg: #14213d;
-    --fg: #f1ede4;
-    --accent: #ff8fab;
-    --link: #8ecae6;
-    --link-hover: #ffd6e0;
-    --muted: #8d9bb8;
-    --line: #2c3c63;
-    --selection-fg: #14213d;
-    --selection-bg: #ff8fab;
+    /* pistachio-on-vss の SETUPTOOLS テーマ（2022-12）の色 */
+    --bg: #202020;
+    --fg: #4684b3;
+    --accent: #e5b62f;
+    --link: #e5b62f;
+    --link-hover: #00ff08;
+    --muted: #5f7f99;
+    --line: #333333;
+    --selection-fg: #ffffff;
+    --selection-bg: #007338;
     /* RGB にじみ（pistachio-on-vss の vhs.css と同じ色） */
     --vhs-white: rgba(255, 255, 255, 0.6);
     --vhs-cream: rgba(255, 255, 235, 0.7);
