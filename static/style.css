@@ -123,8 +123,8 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 
 footer {
     margin-top: 4rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
+    text-align: right;
     color: var(--muted);
     font-size: 0.8rem;
+    line-height: 1.8;
 }
