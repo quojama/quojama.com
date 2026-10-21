@@ -13,9 +13,14 @@
     --line: #3a3128;
     --selection-fg: #121110;
     --selection-bg: #ffb000;
-    /* VHS 風の RGB にじみ */
-    --rgb-1: rgba(251, 0, 231, 0.6);
-    --rgb-2: rgba(0, 233, 235, 0.6);
+    /* RGB にじみ（pistachio-on-vss の vhs.css と同じ色） */
+    --vhs-white: rgba(255, 255, 255, 0.6);
+    --vhs-cream: rgba(255, 255, 235, 0.7);
+    --vhs-magenta: rgba(251, 0, 231, 0.8);
+    --vhs-cyan: rgba(0, 233, 235, 0.8);
+    --vhs-green: rgba(0, 242, 14, 0.8);
+    --vhs-red: rgba(244, 45, 0, 0.8);
+    --vhs-blue: rgba(59, 0, 226, 0.8);
 }
 
 * { box-sizing: border-box; }
@@ -38,14 +43,58 @@ main {
     padding: 15vh 16px 2rem;
 }
 
-/* ===== RGB にじみ（sankoku の VHS Retro を参考） ===== */
-main { animation: rgbText 2s steps(9) infinite alternate; }
+/* ===== RGB にじみ =====
+ * pistachio-on-vss の static/css/vhs.css と同じ動き
+ * （元ネタ: https://codepen.io/pbitos/pen/zypwVr）。色だけ :root の変数にしている。
+ */
+main {
+    will-change: text-shadow;
+    animation: rgbText 2s steps(9) 0s infinite alternate;
+}
 
 @keyframes rgbText {
-    0%, 55% { text-shadow: 0 0 0.6px var(--rgb-1), 0 0 0.6px var(--rgb-2); }
-    45% { text-shadow: 0.5px 0 0.3px var(--rgb-1), -0.5px 0 0.3px var(--rgb-2); }
-    90% { text-shadow: -0.5px 0 0.3px var(--rgb-1), 0.5px 0 0.3px var(--rgb-2); }
-    100% { text-shadow: 0.5px 0 0.3px var(--rgb-1), 0 -0.5px 0.3px var(--rgb-2); }
+    0% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), 0px 0 0.4px var(--vhs-magenta),
+            0 0px 0.7px var(--vhs-cyan), 0px 0 0.7px var(--vhs-green),
+            0 0px 0.7px var(--vhs-red), 0px 0 0.7px var(--vhs-blue);
+    }
+    25% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), 0px 0 0.4px var(--vhs-magenta),
+            0 0px 0.7px var(--vhs-cyan), 0px 0 0.7px var(--vhs-green),
+            0 0px 0.7px var(--vhs-red), 0px 0 0.7px var(--vhs-blue);
+    }
+    45% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), 0.9px 0 0.4px var(--vhs-magenta),
+            0 0.9px 0.4px var(--vhs-cyan), -0.9px 0 0.4px var(--vhs-green),
+            0 -0.9px 0.4px var(--vhs-red), 0.9px 0 0.4px var(--vhs-blue);
+    }
+    50% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), -0.9px 0 0.4px var(--vhs-magenta),
+            0 -0.9px 0.4px var(--vhs-cyan), 0.9px 0 0.4px var(--vhs-green),
+            0 0.9px 0.4px var(--vhs-red), -0.9px 0 0.4px var(--vhs-blue);
+    }
+    55% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), 0px 0 0.7px var(--vhs-magenta),
+            0 0px 0.7px var(--vhs-cyan), 0px 0 0.7px var(--vhs-green),
+            0 0px 0.7px var(--vhs-red), 0px 0 0.7px var(--vhs-blue);
+    }
+    90% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), -0.9px 0 0.4px var(--vhs-magenta),
+            0 0.9px 0.4px var(--vhs-cyan), 0.9px 0 0.4px var(--vhs-green),
+            0 -0.9px 0.4px var(--vhs-red), 0.9px 0 0.4px var(--vhs-blue);
+    }
+    100% {
+        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
+            0.4px -0.4px 0.7px var(--vhs-cream), 0.9px 0 0.4px var(--vhs-magenta),
+            0 -0.9px 0.4px var(--vhs-cyan), -0.9px 0 0.4px var(--vhs-green),
+            0 0.9px 0.4px var(--vhs-red), -0.9px 0 0.4px var(--vhs-blue);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
