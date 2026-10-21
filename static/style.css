@@ -29,8 +29,8 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--fg);
-    /* 日本語対応の丸ゴシック Zen Maru Gothic。読み込めないときは OS の日本語フォント */
-    font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+    /* 日本語対応の筆ペン風フォント Zen Kurenaido。読み込めないときは OS の日本語フォント */
+    font-family: "Zen Kurenaido", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
     font-size: 16px;
     line-height: 1.9;
 }
