@@ -1,4 +1,4 @@
-## Yuki Koyama aka quojama
+## Links
 
 - [Instagram](https://www.instagram.com/quojama/)
 - [X](https://x.com/quojama)

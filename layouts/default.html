@@ -10,22 +10,65 @@
     <meta property="og:title" content="{{site_title}}" />
     <meta property="og:description" content="{{site_description}}" />
     <meta property="og:url" content="{{base_url}}" />
+    <meta name="theme-color" content="#0d0a08" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <main>
-        <h1><a href="/">quojama</a></h1>
+    <!-- 走査線（装飾のみ） -->
+    <div class="lines" aria-hidden="true"></div>
+
+    <main class="vhs">
+        <header>
+            <span class="doggo" aria-hidden="true">*</span>
+            <span class="typew" data-text="hi.....................................!">hi.....................................!</span>
+
+            <h1 id="title"><a href="/">quojama</a></h1>
+            <p class="tagline typek" data-text="{{site_description}}.">{{site_description}}.</p>
+        </header>
+
+        <hr />
 
         <!-- @CONTENTS -->
         {{{contents}}}
         <!-- /@CONTENTS -->
+
+        <footer>
+            Acknowledgments: <a href="https://github.com/veltiosoft/vss" target="_blank" rel="noopener noreferrer">VSS</a>,
+            <a href="https://codepen.io/pbitos/pen/zypwVr" target="_blank" rel="noopener noreferrer">VHS Retro</a><br />
+            GitHub repository: <a href="https://github.com/quojama/quojama.com" target="_blank" rel="noopener noreferrer">quojama.com</a><br />
+            Hosted by: <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a><br />
+            &copy; <span id="copyright-year"></span> quojama
+        </footer>
     </main>
 
-    <footer>
-        &copy; <span id="copyright-year"></span> quojama
-        <script>document.getElementById("copyright-year").textContent = new Date().getFullYear();</script>
-    </footer>
+    <script>
+        document.getElementById("copyright-year").textContent = new Date().getFullYear();
+
+        // タイピング演出（sankoku の t.js 風。依存ライブラリなし）
+        // JS が動かない／動きを減らす設定のときは全文をそのまま表示する
+        (function () {
+            var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            function type(el, speed, delay) {
+                var text = el.getAttribute("data-text") || "";
+                if (reduce) { el.textContent = text; return; }
+                el.textContent = "";
+                var caret = document.createElement("span");
+                caret.className = "caret";
+                el.appendChild(caret);
+                var i = 0;
+                setTimeout(function step() {
+                    caret.insertAdjacentText("beforebegin", text.charAt(i++));
+                    if (i < text.length) setTimeout(step, speed + Math.random() * speed);
+                }, delay);
+            }
+            document.querySelectorAll(".typew").forEach(function (el) { type(el, 10, 100); });
+            document.querySelectorAll(".typek").forEach(function (el) { type(el, 25, 1400); });
+        })();
+    </script>
 </body>
 
 </html>
