@@ -45,7 +45,8 @@ main {
     /* sankoku と同じく幅を狭めて真ん中に寄せる */
     max-width: 28rem;
     margin: 0 auto;
-    padding: 12vh 16px 2rem;
+    /* 左右の余白はスマホで窮屈にならないよう広めに */
+    padding: 12vh 32px 2rem;
 }
 
 /* ===== RGB にじみ =====
