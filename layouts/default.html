@@ -22,12 +22,15 @@
     <!-- 本文は等幅の M PLUS 1 Code、絵文字は白黒の Noto Emoji で感熱紙っぽく -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Noto+Emoji&display=swap" rel="stylesheet" />
     <!-- CSS を変えたら ?v= を変えて、古い CSS のキャッシュと組み合わさらないようにする -->
-    <link rel="stylesheet" href="style.css?v=4" />
+    <link rel="stylesheet" href="style.css?v=5" />
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
 </head>
 
 <body>
+    <!-- 背景のジャングル（static/jungle.js が文字で描く） -->
+    <canvas class="jungle" id="jungle" aria-hidden="true"></canvas>
+
     <div class="printer" aria-hidden="true"></div>
 
     <!-- レシート。中身(About / Links / Social)は index.md。
@@ -107,6 +110,8 @@
             (document.fonts ? document.fonts.ready : Promise.resolve()).then(print);
         })();
     </script>
+    <!-- JS を変えたら ?v= を変える -->
+    <script src="jungle.js?v=1"></script>
 </body>
 
 </html>
