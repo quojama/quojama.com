@@ -230,3 +230,7 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 
 .error-message { font-size: 15px; font-weight: 600; }
+
+/* ===== お知らせ欄（news.md） ===== */
+.news h2 { text-align: center; font-weight: 600; }
+.news p:not([class]) { padding-left: 0; }

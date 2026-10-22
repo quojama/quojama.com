@@ -36,7 +36,7 @@
     <!-- 本文は等幅の M PLUS 1 Code、絵文字は白黒の Noto Emoji で感熱紙っぽく -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Noto+Emoji&display=swap" rel="stylesheet" />
     <!-- CSS を変えたら ?v= を変えて、古い CSS のキャッシュと組み合わさらないようにする -->
-    <link rel="stylesheet" href="/style.css?v=7" />
+    <link rel="stylesheet" href="/style.css?v=8" />
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
     {{^title}}
@@ -86,7 +86,9 @@
         <hr />
 
         <!-- @CONTENTS -->
+        <div id="items">
         {{{contents}}}
+        </div>
         <!-- /@CONTENTS -->
 
         <hr />
@@ -96,6 +98,11 @@
         <p class="row"><span>お預り</span><span id="receipt-paid"></span></p>
         <p class="row"><span>おつり</span><span id="receipt-change"></span></p>
         <hr />
+        <!-- お知らせ欄（コンビニのレシートの割引券のところ）。中身は news.md で、空なら出さない -->
+        <div class="news" id="news" hidden>
+            <div id="news-body"></div>
+            <hr />
+        </div>
         <img class="qr" src="/qr.png" width="25" height="25" alt="quojama.com の QR コード" />
         <p class="center">quojama.com</p>
         <p class="center thanks">またお越しください</p>
@@ -117,10 +124,12 @@
     <script>
         (function () {
             var paper = document.getElementById("paper");
+            // 点数や値段を数えるのは index.md / 404.md の品目だけ（お知らせのリンクは数えない）
+            var items = document.getElementById("items");
             var count = 0;
 
             document.getElementById("copyright-year").textContent = new Date().getFullYear();
-            document.getElementById("receipt-count").textContent = paper.querySelectorAll("li a").length + "点";
+            document.getElementById("receipt-count").textContent = items.querySelectorAll("li a").length + "点";
 
             var yen = function (n) { return "¥" + n.toLocaleString("ja-JP"); };
             var pick = function (list) { return list[Math.floor(Math.random() * list.length)]; };
@@ -141,13 +150,13 @@
 
             // 品目の値段は印刷するたびに ¥100〜¥2,000（1円単位）でつけ直す。
             // index.md などで <span class="price">¥404</span> と書いた品目は、その値段のまま
-            paper.querySelectorAll("li .price").forEach(function (tag) {
+            items.querySelectorAll("li .price").forEach(function (tag) {
                 tag.dataset.fixed = parseInt(tag.textContent.replace(/[^0-9]/g, ""), 10);
             });
 
             function price() {
                 var total = 0;
-                paper.querySelectorAll("li a").forEach(function (a) {
+                items.querySelectorAll("li a").forEach(function (a) {
                     var li = a.parentNode;
                     var tag = li.querySelector(".price");
                     if (!tag) {
@@ -194,8 +203,19 @@
             }
 
             document.getElementById("reprint").addEventListener("click", print);
+            // news.md は layouts/news.html で中身だけの news.html になるので、それを読んで差し込む。
+            // 紙の高さが変わるので印字の前に入れる。遅いときは待たずにお知らせなしで刷る
+            var news = Promise.race([
+                fetch("/news.html").then(function (r) { return r.ok ? r.text() : ""; }).then(function (html) {
+                    if (!html.trim()) return;
+                    document.getElementById("news-body").innerHTML = html;
+                    document.getElementById("news").hidden = false;
+                }),
+                new Promise(function (r) { setTimeout(r, 2000); })
+            ]).catch(function () {});
+
             // フォントが読み込まれて紙の高さが決まってから送り出す
-            (document.fonts ? document.fonts.ready : Promise.resolve()).then(print);
+            Promise.all([document.fonts ? document.fonts.ready : null, news]).then(print);
         })();
     </script>
     <!-- JS を変えたら ?v= を変える -->
