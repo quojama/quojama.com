@@ -1,134 +1,176 @@
 /*
  * quojama.com
- * テキストだけのシンプルなページ。配色は pistachio-on-vss の SETUPTOOLS テーマから。
+ * 1ページだけのレシート。暗い台の上に感熱紙が1枚出てくる。
  * 色はこの :root の変数だけで管理する（他の場所に色を直書きしない）。
  */
 :root {
-    /* pistachio-on-vss の SETUPTOOLS テーマ（2022-12）の色 */
+    /* 台（pistachio-on-vss の SETUPTOOLS テーマの背景とアクセント） */
     --bg: #202020;
-    --fg: #4684b3;
     --accent: #e5b62f;
-    --link: #e5b62f;
-    --link-hover: #00ff08;
+    --accent-hover: #00ff08;
     --muted: #5f7f99;
-    --line: #333333;
+    /* プリンタ */
+    --printer: #3a3a3a;
+    --printer-slot: #111111;
+    /* 感熱紙と印字 */
+    --paper: #f6f5f1;
+    --ink: #2b2b2b;
+    --rule: #9a9a9a;
+    --shadow: rgba(0, 0, 0, 0.35);
     --selection-fg: #ffffff;
     --selection-bg: #007338;
-    /* RGB にじみ（pistachio-on-vss の vhs.css と同じ色） */
-    --vhs-white: rgba(255, 255, 255, 0.6);
-    --vhs-cream: rgba(255, 255, 235, 0.7);
-    --vhs-magenta: rgba(251, 0, 231, 0.8);
-    --vhs-cyan: rgba(0, 233, 235, 0.8);
-    --vhs-green: rgba(0, 242, 14, 0.8);
-    --vhs-red: rgba(244, 45, 0, 0.8);
-    --vhs-blue: rgba(59, 0, 226, 0.8);
 }
 
 * { box-sizing: border-box; }
 
-/* 文字の大きさは sankoku（html 20px）に近づけた 18px。rem はこの値が基準 */
-html { font-size: 18px; }
+html { font-size: 16px; }
 
 body {
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 8vh 16px 2rem;
     background: var(--bg);
-    color: var(--fg);
-    /* 日本語対応の鉛筆・教科書風フォント Klee One。読み込めないときは OS の日本語フォント */
-    font-family: "Klee One", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
-    font-size: 1rem;
-    line-height: 1.9;
+    color: var(--ink);
+    /* 日本語も出る等幅フォント。絵文字は白黒の Noto Emoji で黒一色に印字する */
+    font-family: "M PLUS 1 Code", "Noto Emoji", "Osaka-Mono", "MS Gothic", monospace;
 }
 
 ::selection { color: var(--selection-fg); background: var(--selection-bg); }
 
-main {
-    /* sankoku と同じく幅を狭めて真ん中に寄せる */
-    max-width: 28rem;
+/* ===== プリンタの口 ===== */
+.printer {
+    position: relative;
+    width: min(100%, 340px);
+    height: 18px;
+    background: var(--printer);
+    border-radius: 6px 6px 2px 2px;
+}
+
+.printer::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 2px;
+    height: 3px;
+    background: var(--printer-slot);
+    border-radius: 2px;
+}
+
+/* ===== 感熱紙 ===== */
+.paper {
+    position: relative;
+    width: min(100%, 312px);
+    margin-top: -22px;
+    padding: 22px 20px 26px;
+    background: var(--paper);
+    font-size: 13px;
+    line-height: 1.75;
+    filter: drop-shadow(0 6px 10px var(--shadow));
+}
+
+/* 紙の下端のギザギザ（ちぎった跡） */
+.paper::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 8px;
+    background:
+        linear-gradient(-45deg, var(--bg) 4px, transparent 0) 0 0 / 10px 8px repeat-x,
+        linear-gradient(45deg, var(--bg) 4px, transparent 0) 0 0 / 10px 8px repeat-x;
+}
+
+.paper p { margin: 0; }
+
+.paper hr {
+    border: 0;
+    border-top: 1px dashed var(--rule);
+    margin: 6px 0;
+}
+
+.logo, .qr {
+    display: block;
     margin: 0 auto;
-    /* 左右の余白はスマホで窮屈にならないよう広めに */
-    padding: 12vh 32px 2rem;
+    image-rendering: pixelated;
 }
 
-/* ===== RGB にじみ =====
- * pistachio-on-vss の static/css/vhs.css と同じ動き
- * （元ネタ: https://codepen.io/pbitos/pen/zypwVr）。色だけ :root の変数にしている。
- */
-main {
-    will-change: text-shadow;
-    animation: rgbText 2s steps(9) 0s infinite alternate;
+.logo { width: 128px; height: 128px; margin-bottom: 4px; }
+.qr { width: 100px; height: 100px; margin-top: 14px; margin-bottom: 6px; }
+
+h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-align: center;
 }
 
-@keyframes rgbText {
-    0% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), 0px 0 0.4px var(--vhs-magenta),
-            0 0px 0.7px var(--vhs-cyan), 0px 0 0.7px var(--vhs-green),
-            0 0px 0.7px var(--vhs-red), 0px 0 0.7px var(--vhs-blue);
-    }
-    25% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), 0px 0 0.4px var(--vhs-magenta),
-            0 0px 0.7px var(--vhs-cyan), 0px 0 0.7px var(--vhs-green),
-            0 0px 0.7px var(--vhs-red), 0px 0 0.7px var(--vhs-blue);
-    }
-    45% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), 0.9px 0 0.4px var(--vhs-magenta),
-            0 0.9px 0.4px var(--vhs-cyan), -0.9px 0 0.4px var(--vhs-green),
-            0 -0.9px 0.4px var(--vhs-red), 0.9px 0 0.4px var(--vhs-blue);
-    }
-    50% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), -0.9px 0 0.4px var(--vhs-magenta),
-            0 -0.9px 0.4px var(--vhs-cyan), 0.9px 0 0.4px var(--vhs-green),
-            0 0.9px 0.4px var(--vhs-red), -0.9px 0 0.4px var(--vhs-blue);
-    }
-    55% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), 0px 0 0.7px var(--vhs-magenta),
-            0 0px 0.7px var(--vhs-cyan), 0px 0 0.7px var(--vhs-green),
-            0 0px 0.7px var(--vhs-red), 0px 0 0.7px var(--vhs-blue);
-    }
-    90% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), -0.9px 0 0.4px var(--vhs-magenta),
-            0 0.9px 0.4px var(--vhs-cyan), 0.9px 0 0.4px var(--vhs-green),
-            0 -0.9px 0.4px var(--vhs-red), 0.9px 0 0.4px var(--vhs-blue);
-    }
-    100% {
-        text-shadow: -0.4px 0.4px 0.7px var(--vhs-white),
-            0.4px -0.4px 0.7px var(--vhs-cream), 0.9px 0 0.4px var(--vhs-magenta),
-            0 -0.9px 0.4px var(--vhs-cyan), -0.9px 0 0.4px var(--vhs-green),
-            0 0.9px 0.4px var(--vhs-red), -0.9px 0 0.4px var(--vhs-blue);
-    }
+.center { text-align: center; }
+.thanks { margin-top: 8px !important; }
+
+/* 左右に振り分ける行（日時と番号、点数と金額など） */
+.row, .paper li {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    main { animation: none; }
-}
-
-h1 { font-size: 1.5rem; margin: 0 0 2.5rem; }
-h1 a:any-link { color: var(--accent); text-decoration: none; }
-
+/* About / Links / Social は見出しの下を字下げした品目の並び */
 h2 {
-    font-size: 1rem;
-    color: var(--muted);
-    margin: 2rem 0 0.5rem;
+    margin: 0;
+    font-size: inherit;
+    font-weight: 400;
 }
 
-h2::before { content: "## "; }
+ul { list-style: none; margin: 0; padding: 0 0 0 1em; }
+ul + h2 { margin-top: 1.75em; }
 
-ul { list-style: none; padding: 0; margin: 0; }
+/* About の「1987」などを右端へ */
+.paper li span { margin-left: auto; }
 
-li::before { content: "- "; color: var(--muted); }
+/* リンクの行は右端に → */
+.paper li:has(a) { justify-content: flex-start; }
+.paper li:has(a)::after { content: "→"; margin-left: auto; }
 
-a:any-link { color: var(--link); text-decoration: none; }
-a:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+.paper a:any-link { color: var(--ink); text-decoration: none; }
+.paper a:hover { color: var(--paper); background: var(--ink); }
+h1 a:hover { color: var(--ink); background: none; }
 
+/* 印字前の行（layouts/default.html のスクリプトが1行ずつ外していく） */
+.unprinted { display: none !important; }
+
+/* ===== もう一枚印刷する ===== */
+.reprint {
+    padding: 9px 14px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.reprint:hover { color: var(--accent-hover); border-color: var(--accent-hover); }
+
+a:focus-visible, button:focus-visible { outline: 2px dashed var(--accent-hover); outline-offset: 3px; }
+
+/* ===== フッター ===== */
 footer {
-    margin-top: 4rem;
+    width: min(100%, 312px);
+    margin-top: 1rem;
     text-align: right;
     color: var(--muted);
     font-size: 0.6rem;
     line-height: 1.8;
 }
+
+footer a:any-link { color: var(--accent); text-decoration: none; }
+footer a:hover { color: var(--accent-hover); text-decoration: underline; }
