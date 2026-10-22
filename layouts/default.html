@@ -87,17 +87,18 @@
             }
 
             // 本物のレシートと同じく、刷り上がった紙がプリンタの口から押し出されてくる。
-            // 紙の下端（「またお越しください」）から先に出る。transform だけを動かすので軽い。
+            // 紙の下端（「またお越しください」）から先に出て、1行ぶんずつカクカク送られる。
             // 動きを減らす設定のときは送らずにそのまま出す
             function print() {
                 stamp();
                 document.documentElement.classList.remove("before-print");
                 if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+                var lineHeight = parseFloat(getComputedStyle(paper).lineHeight);
+                var steps = Math.max(1, Math.round(paper.offsetHeight / lineHeight));
                 paper.style.transition = "none";
                 paper.style.transform = "translateY(-100%)";
                 paper.offsetHeight; // ここで一度描画位置を確定させてから送り始める
-                // 紙が長いほど時間をかける（1px あたり 2.4ms、長くても 3 秒。最後は少しゆっくり止まる）
-                paper.style.transition = "transform " + Math.min(3000, Math.round(paper.offsetHeight * 2.4)) + "ms cubic-bezier(0.3, 0.1, 0.4, 1)";
+                paper.style.transition = "transform " + (steps * 60) + "ms steps(" + steps + ")";
                 paper.style.transform = "translateY(0)";
             }
 
