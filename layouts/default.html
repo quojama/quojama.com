@@ -22,12 +22,16 @@
     <!-- 本文は等幅の M PLUS 1 Code、絵文字は白黒の Noto Emoji で感熱紙っぽく -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Noto+Emoji&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
+    <script>document.documentElement.classList.add("before-print");</script>
 </head>
 
 <body>
     <div class="printer" aria-hidden="true"></div>
 
-    <!-- レシート。中身(About / Links / Social)は index.md -->
+    <!-- レシート。中身(About / Links / Social)は index.md。
+         tray は印字し終えたときの高さを先に確保して、下のボタンやフッターが動かないようにする -->
+    <div class="tray" id="tray">
     <main class="paper" id="paper">
         <img class="logo" src="receipt-icon.png" width="32" height="32" alt="" />
         <h1><a href="./">{{site_title}}</a></h1>
@@ -49,6 +53,7 @@
         <p class="center">quojama.com</p>
         <p class="center thanks">またお越しください</p>
     </main>
+    </div>
 
     <button class="reprint" id="reprint" type="button">もう一枚印刷する</button>
 
@@ -65,6 +70,7 @@
     <script>
         (function () {
             var paper = document.getElementById("paper");
+            var tray = document.getElementById("tray");
             var count = 0;
             var timer = 0;
 
@@ -92,17 +98,28 @@
             function print() {
                 stamp();
                 clearInterval(timer);
-                if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+                if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    document.documentElement.classList.remove("before-print");
+                    return;
+                }
+                // 全部出ている今の高さを確保してから行を隠す
+                lines.forEach(function (el) { el.classList.remove("unprinted"); });
+                tray.style.minHeight = paper.offsetHeight + "px";
                 lines.forEach(function (el) { el.classList.add("unprinted"); });
+                document.documentElement.classList.remove("before-print");
                 var i = 0;
                 timer = setInterval(function () {
                     lines[i++].classList.remove("unprinted");
-                    if (i >= lines.length) clearInterval(timer);
+                    if (i >= lines.length) {
+                        clearInterval(timer);
+                        tray.style.minHeight = "";
+                    }
                 }, 70);
             }
 
             document.getElementById("reprint").addEventListener("click", print);
-            print();
+            // フォントが読み込まれてから高さを測る
+            (document.fonts ? document.fonts.ready : Promise.resolve()).then(print);
         })();
     </script>
 </body>
