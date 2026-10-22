@@ -241,3 +241,6 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 
 .news #news-body { margin-bottom: 10px; }
+
+/* 空行で分けた段落どうしは少し空け、行末の2スペース（<br>）の改行は詰めたままにする */
+.news p + p { margin-top: 0.6em; }
