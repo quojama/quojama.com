@@ -1,5 +1,5 @@
 site_title = "quojama.com"
-site_description = "Yuki Koyama aka quojama"
+site_description = "Yuki Koyama"
 base_url = "https://quojama.com/"
 
 [build]
