@@ -336,7 +336,9 @@
     }
 
     // ===== ループ =====
-    // 動きを減らす設定のときは、止まった1コマだけ描く。タブが裏にあるときは止める
+    // 動きを減らす設定のときは、止まった1コマだけ描く。タブが裏にあるときは止める。
+    // 負荷を半分にするため 1秒に30コマだけ描く（進み方は経過時間で決まるので、歩く速さは変わらない）
+    var FPS = 30;
     var t = 6, last = 0;
     function step(dt) {
         var k = dt * 60;
@@ -347,6 +349,8 @@
     }
     function frame(now) {
         requestAnimationFrame(frame);
+        // 前のコマからまだ 1/30 秒たっていなければ描かない（画面の更新の揺れぶん少し早めに許す）
+        if (last && now - last < 1000 / FPS - 4) return;
         var dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
         last = now;
         if (document.hidden) return;
