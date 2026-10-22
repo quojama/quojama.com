@@ -9,4 +9,4 @@ https://quojama.com/ の個人サイト。VSS でビルドし GitHub Pages で�
 - `static/` 配下は `dist/` 直下にコピーされる（`static/CNAME` → `dist/CNAME`）。
 - `dist/` と `vss` バイナリはビルド生成物なので編集・コミットしない。
 - 確認は `make setup && make build`（Windows は `make setup-win && make build-win`、Mac は `make setup-mac && make build`）。
-- 独自ドメイン（quojama.com）は未設定。DNS はまだロリポップ/旧 WordPress を向いている。
+- 独自ドメイン quojama.com は GitHub Pages の Settings → Pages（Custom domain）で設定済み。Actions デプロイなので `static/CNAME` は GitHub には読まれない。DNS はムームードメインのムームーDNS（A ×4 と www の CNAME）。
