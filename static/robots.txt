@@ -1,0 +1,7 @@
+# 検索エンジンも AI のクローラーも、どこを読んでもよい
+User-agent: *
+Allow: /
+# お知らせ欄の部品（トップに JS で差し込む）。単独のページとしては出さない
+Disallow: /news.html
+
+Sitemap: https://quojama.com/sitemap.xml

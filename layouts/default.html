@@ -4,27 +4,68 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{site_title}}</title>
+    <!-- title を書いたページ（404）は「title | サイト名」、トップは名前も入れる -->
+    <title>{{#title}}{{title}} | {{site_title}}{{/title}}{{^title}}{{site_title}} - {{site_description}}{{/title}}</title>
     <meta name="description" content="{{site_description}}" />
+    <meta name="author" content="Yuki Koyama" />
+    {{#title}}
+    <!-- トップ以外（404）は検索に出さない -->
+    <meta name="robots" content="noindex" />
+    {{/title}}
+    {{^title}}
+    <link rel="canonical" href="{{base_url}}" />
+    <meta property="og:url" content="{{base_url}}" />
+    {{/title}}
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{site_title}}" />
+    <meta property="og:locale" content="ja_JP" />
     <meta property="og:title" content="{{site_title}}" />
     <meta property="og:description" content="{{site_description}}" />
-    <meta property="og:url" content="{{base_url}}" />
     <meta property="og:image" content="{{base_url}}og.png" />
     <meta property="og:image:width" content="600" />
     <meta property="og:image:height" content="600" />
     <meta name="twitter:card" content="summary" />
-    <link rel="icon" href="favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="twitter:site" content="@quojama" />
+    <!-- 404.html はどの階層の URL でも返されるので、読み込むものはすべて / から書く -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <meta name="theme-color" content="#202020" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- 本文は等幅の M PLUS 1 Code、絵文字は白黒の Noto Emoji で感熱紙っぽく -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Noto+Emoji&display=swap" rel="stylesheet" />
     <!-- CSS を変えたら ?v= を変えて、古い CSS のキャッシュと組み合わさらないようにする -->
-    <link rel="stylesheet" href="style.css?v=5" />
+    <link rel="stylesheet" href="/style.css?v=10" />
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
+    {{^title}}
+    <!-- 検索エンジンや AI 向けのプロフィール。sameAs は index.md の Social と揃える -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "url": "https://quojama.com/",
+        "inLanguage": "ja",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Yuki Koyama",
+            "alternateName": "quojama",
+            "url": "https://quojama.com/",
+            "image": "https://quojama.com/og.png",
+            "sameAs": [
+                "https://www.instagram.com/quojama/",
+                "https://x.com/quojama",
+                "https://github.com/quojama",
+                "https://filmarks.com/users/quojama",
+                "https://www.strava.com/athletes/186208570",
+                "https://www.yamareco.com/modules/yamareco/userinfo-950394-data.html",
+                "https://www.mixcloud.com/quojama/"
+            ]
+        }
+    }
+    </script>
+    {{/title}}
 </head>
 
 <body>
@@ -37,23 +78,32 @@
          tray はプリンタの口から上を隠す枠。紙は tray の中で上から下へ送られる -->
     <div class="tray" id="tray">
     <main class="paper" id="paper">
-        <img class="logo" src="receipt-icon.png" width="32" height="32" alt="" />
-        <h1><a href="./">{{site_title}}</a></h1>
+        <img class="logo" src="/receipt-icon.png" width="32" height="32" alt="" />
+        <h1><a href="/">{{site_title}}</a></h1>
         <p class="center">毎度おおきに</p>
         <hr />
         <p class="row"><span id="receipt-date"></span><span id="receipt-no"></span></p>
         <hr />
 
         <!-- @CONTENTS -->
+        <div id="items">
         {{{contents}}}
+        </div>
         <!-- /@CONTENTS -->
 
         <hr />
         <p class="row"><span>点数</span><span id="receipt-count"></span></p>
-        <p class="row"><span>お預り</span><span>¥0</span></p>
-        <p class="row"><span>おつり</span><span>¥0</span></p>
+        <p class="row total"><span>合計</span><span id="receipt-total"></span></p>
+        <p class="row"><span>(内消費税等</span><span id="receipt-tax"></span></p>
+        <p class="row"><span>お預り</span><span id="receipt-paid"></span></p>
+        <p class="row"><span>おつり</span><span id="receipt-change"></span></p>
         <hr />
-        <img class="qr" src="qr.png" width="25" height="25" alt="quojama.com の QR コード" />
+        <!-- お知らせ欄（コンビニのレシートの割引券のところ）。中身は news.md で、空なら出さない -->
+        <div class="news" id="news" hidden>
+            <div id="news-body"></div>
+            <hr />
+        </div>
+        <img class="qr" src="/qr.png" width="25" height="25" alt="quojama.com の QR コード" />
         <p class="center">quojama.com</p>
         <p class="center thanks">またお越しください</p>
     </main>
@@ -74,10 +124,56 @@
     <script>
         (function () {
             var paper = document.getElementById("paper");
+            // 点数や値段を数えるのは index.md / 404.md の品目だけ（お知らせのリンクは数えない）
+            var items = document.getElementById("items");
             var count = 0;
 
             document.getElementById("copyright-year").textContent = new Date().getFullYear();
-            document.getElementById("receipt-count").textContent = paper.querySelectorAll("li a").length + "点";
+            document.getElementById("receipt-count").textContent = items.querySelectorAll("li a").length + "点";
+
+            var yen = function (n) { return "¥" + n.toLocaleString("ja-JP"); };
+            var pick = function (list) { return list[Math.floor(Math.random() * list.length)]; };
+            var ceil = function (n, unit) { return Math.ceil(n / unit) * unit; };
+
+            // お預りは、本当にレジで出しそうな額にする（1,234円なら 1,234 / 1,500 / 2,000 / 2,034 など）。
+            // よくある出し方ほど候補に多く入れて、出やすくする
+            function tendered(total) {
+                var bill = ceil(total, 1000);
+                var list = [bill, bill, bill, bill, total];
+                if (ceil(total, 500) < bill) list.push(ceil(total, 500), ceil(total, 500));
+                // 端数の小銭を足して、おつりをきりのいい額にする出し方
+                if (total % 100 && total % 1000 > total % 100) list.push(bill + total % 100, bill + total % 100);
+                if (total >= 2000 && ceil(total, 5000) > bill) list.push(ceil(total, 5000));
+                if (total >= 5000 && ceil(total, 10000) > ceil(total, 5000)) list.push(ceil(total, 10000));
+                return pick(list);
+            }
+
+            // 品目の値段は印刷するたびに ¥100〜¥2,000（1円単位）でつけ直す。
+            // index.md などで <span class="price">¥404</span> と書いた品目は、その値段のまま
+            items.querySelectorAll("li .price").forEach(function (tag) {
+                tag.dataset.fixed = parseInt(tag.textContent.replace(/[^0-9]/g, ""), 10);
+            });
+
+            function price() {
+                var total = 0;
+                items.querySelectorAll("li a").forEach(function (a) {
+                    var li = a.parentNode;
+                    var tag = li.querySelector(".price");
+                    if (!tag) {
+                        tag = document.createElement("span");
+                        tag.className = "price";
+                        li.appendChild(tag);
+                    }
+                    var n = tag.dataset.fixed ? Number(tag.dataset.fixed) : 100 + Math.floor(Math.random() * 1901);
+                    tag.textContent = yen(n);
+                    total += n;
+                });
+                var paid = tendered(total);
+                document.getElementById("receipt-total").textContent = yen(total);
+                document.getElementById("receipt-tax").textContent = yen(Math.floor(total * 10 / 110)) + ")";
+                document.getElementById("receipt-paid").textContent = yen(paid);
+                document.getElementById("receipt-change").textContent = yen(paid - total);
+            }
 
             function stamp() {
                 var d = new Date();
@@ -94,6 +190,7 @@
             // 動きを減らす設定のときは送らずにそのまま出す
             function print() {
                 stamp();
+                price();
                 document.documentElement.classList.remove("before-print");
                 if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
                 var lineHeight = parseFloat(getComputedStyle(paper).lineHeight);
@@ -106,12 +203,23 @@
             }
 
             document.getElementById("reprint").addEventListener("click", print);
+            // news.md は layouts/news.html で中身だけの news.html になるので、それを読んで差し込む。
+            // 紙の高さが変わるので印字の前に入れる。遅いときは待たずにお知らせなしで刷る
+            var news = Promise.race([
+                fetch("/news.html").then(function (r) { return r.ok ? r.text() : ""; }).then(function (html) {
+                    if (!html.trim()) return;
+                    document.getElementById("news-body").innerHTML = html;
+                    document.getElementById("news").hidden = false;
+                }),
+                new Promise(function (r) { setTimeout(r, 2000); })
+            ]).catch(function () {});
+
             // フォントが読み込まれて紙の高さが決まってから送り出す
-            (document.fonts ? document.fonts.ready : Promise.resolve()).then(print);
+            Promise.all([document.fonts ? document.fonts.ready : null, news]).then(print);
         })();
     </script>
     <!-- JS を変えたら ?v= を変える -->
-    <script src="jungle.js?v=1"></script>
+    <script src="/jungle.js?v=1"></script>
 </body>
 
 </html>

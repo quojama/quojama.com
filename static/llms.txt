@@ -1,0 +1,20 @@
+# quojama.com
+
+> Yuki Koyama（quojama）の個人サイト。プロフィールと、各サービスへのリンクを載せている。
+
+Yuki Koyama は1987年生まれ、東京都台東区在住。ハンドルネームは quojama。
+
+## Links
+
+- [Pistachio Studio](https://pistachiostudio.net/)
+- [糞取山酷会](https://sankoku.club/)
+
+## Social
+
+- [Instagram](https://www.instagram.com/quojama/)
+- [X](https://x.com/quojama)
+- [GitHub](https://github.com/quojama)
+- [Filmarks](https://filmarks.com/users/quojama): 観た映画の記録
+- [Strava](https://www.strava.com/athletes/186208570): ランニングなどの記録
+- [Yamareco](https://www.yamareco.com/modules/yamareco/userinfo-950394-data.html): 登山の記録
+- [Mixcloud](https://www.mixcloud.com/quojama/): DJ ミックス
