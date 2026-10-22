@@ -1,7 +1,8 @@
 ## About
 
-* Yuki Koyama
-* 1987年生まれ。東京都台東区在住。
+Yuki Koyama
+
+1987年生まれ。東京都台東区在住。
 
 ## Links
 
