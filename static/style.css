@@ -153,12 +153,15 @@ ul { list-style: none; margin: 0; padding: 0 0 0 1em; }
 .paper p:not([class]) { padding-left: 1em; }
 ul + h2, p:not([class]) + h2 { margin-top: 1.75em; }
 
-/* About の「1987」などを右端へ */
+/* About の「1987」や、印刷のたびに JS がつける品目の値段を右端へ */
+.paper li:has(a) { justify-content: flex-start; }
 .paper li span { margin-left: auto; }
 
-/* リンクの行は右端に → */
-.paper li:has(a) { justify-content: flex-start; }
-.paper li:has(a)::after { content: "→"; margin-left: auto; }
+/* 値段がまだないリンクの行（JS が動かないとき）は右端に → */
+.paper li:has(a):not(:has(span))::after { content: "→"; margin-left: auto; }
+
+/* 合計の行だけ太く大きく */
+.total { font-weight: 600; font-size: 15px; }
 
 .paper a:any-link { color: var(--ink); text-decoration: none; }
 .paper a:hover { color: var(--paper); background: var(--ink); }
@@ -214,3 +217,16 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
     filter: blur(12px);
     pointer-events: none;
 }
+
+/* ===== 404（404.md） ===== */
+/* レシートの頭に大きく「404」を印字して、エラーだと一目で分かるようにする */
+.error-code {
+    margin: 4px 0 0 !important;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+.error-message { font-size: 15px; font-weight: 600; }
