@@ -21,7 +21,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- 本文は等幅の M PLUS 1 Code、絵文字は白黒の Noto Emoji で感熱紙っぽく -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Noto+Emoji&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <!-- CSS を変えたら ?v= を変えて、古い CSS のキャッシュと組み合わさらないようにする -->
+    <link rel="stylesheet" href="style.css?v=3" />
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
 </head>
@@ -30,7 +31,7 @@
     <div class="printer" aria-hidden="true"></div>
 
     <!-- レシート。中身(About / Links / Social)は index.md。
-         tray は印字し終えたときの高さを先に確保して、下のボタンやフッターが動かないようにする -->
+         tray はプリンタの口から上を隠す枠。紙は tray の中で上から下へ送られる -->
     <div class="tray" id="tray">
     <main class="paper" id="paper">
         <img class="logo" src="receipt-icon.png" width="32" height="32" alt="" />
@@ -70,19 +71,10 @@
     <script>
         (function () {
             var paper = document.getElementById("paper");
-            var tray = document.getElementById("tray");
             var count = 0;
-            var timer = 0;
 
             document.getElementById("copyright-year").textContent = new Date().getFullYear();
             document.getElementById("receipt-count").textContent = paper.querySelectorAll("li a").length + "点";
-
-            // レシートの1行ずつ(リストは項目ごと)
-            var lines = [];
-            Array.prototype.forEach.call(paper.children, function (el) {
-                if (el.tagName === "UL") lines.push.apply(lines, el.children);
-                else lines.push(el);
-            });
 
             function stamp() {
                 var d = new Date();
@@ -94,31 +86,24 @@
                 document.getElementById("receipt-no").textContent = "No." + String(count).padStart(4, "0");
             }
 
-            // 1行ずつ印字する。動きを減らす設定のときは一度に全部出す
+            // 本物のレシートと同じく、刷り上がった紙がプリンタの口から押し出されてくる。
+            // 紙の下端（「またお越しください」）から先に出て、1行ぶんずつカクカク送られる。
+            // 動きを減らす設定のときは送らずにそのまま出す
             function print() {
                 stamp();
-                clearInterval(timer);
-                if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-                    document.documentElement.classList.remove("before-print");
-                    return;
-                }
-                // 全部出ている今の高さを確保してから行を隠す
-                lines.forEach(function (el) { el.classList.remove("unprinted"); });
-                tray.style.minHeight = paper.offsetHeight + "px";
-                lines.forEach(function (el) { el.classList.add("unprinted"); });
                 document.documentElement.classList.remove("before-print");
-                var i = 0;
-                timer = setInterval(function () {
-                    lines[i++].classList.remove("unprinted");
-                    if (i >= lines.length) {
-                        clearInterval(timer);
-                        tray.style.minHeight = "";
-                    }
-                }, 70);
+                if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+                var lineHeight = parseFloat(getComputedStyle(paper).lineHeight);
+                var steps = Math.max(1, Math.round(paper.offsetHeight / lineHeight));
+                paper.style.transition = "none";
+                paper.style.transform = "translateY(-100%)";
+                paper.offsetHeight; // ここで一度描画位置を確定させてから送り始める
+                paper.style.transition = "transform " + (steps * 60) + "ms steps(" + steps + ")";
+                paper.style.transform = "translateY(0)";
             }
 
             document.getElementById("reprint").addEventListener("click", print);
-            // フォントが読み込まれてから高さを測る
+            // フォントが読み込まれて紙の高さが決まってから送り出す
             (document.fonts ? document.fonts.ready : Promise.resolve()).then(print);
         })();
     </script>
