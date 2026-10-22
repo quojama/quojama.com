@@ -62,10 +62,15 @@ body {
 }
 
 /* ===== 感熱紙 ===== */
-.paper {
-    position: relative;
+/* 印字し終えたときの高さ（スクリプトが min-height を入れる）を確保する台 */
+.tray {
     width: min(100%, 312px);
     margin-top: -22px;
+}
+
+.paper {
+    position: relative;
+    width: 100%;
     padding: 22px 20px 26px;
     background: var(--paper);
     font-size: 13px;
@@ -145,6 +150,9 @@ h1 a:hover { color: var(--ink); background: none; }
 
 /* 印字前の行（layouts/default.html のスクリプトが1行ずつ外していく） */
 .unprinted { display: none !important; }
+
+/* 印字が始まるまで紙ごと隠す（layouts/default.html の head で付け、印字開始で外す） */
+.before-print .paper { visibility: hidden; }
 
 /* ===== もう一枚印刷する ===== */
 .reprint {
