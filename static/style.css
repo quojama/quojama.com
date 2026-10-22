@@ -136,7 +136,9 @@ h2 {
 }
 
 ul { list-style: none; margin: 0; padding: 0 0 0 1em; }
-ul + h2 { margin-top: 1.75em; }
+/* index.md に書いた文章（class なしの p）も品目と同じく字下げする */
+.paper p:not([class]) { padding-left: 1em; }
+ul + h2, p:not([class]) + h2 { margin-top: 1.75em; }
 
 /* About の「1987」などを右端へ */
 .paper li span { margin-left: auto; }
