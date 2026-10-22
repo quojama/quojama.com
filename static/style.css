@@ -19,6 +19,12 @@
     --shadow: rgba(0, 0, 0, 0.35);
     --selection-fg: #ffffff;
     --selection-bg: #007338;
+    /* 背景のジャングル（static/jungle.js が読む） */
+    --bg-plant: #6f8f55;
+    --bg-trunk: #7d6a50;
+    --bg-haze: #5a5852;
+    /* ボタンとフッターの後ろに薄く敷く下地 */
+    --scrim: rgba(32, 32, 32, 0.82);
 }
 
 * { box-sizing: border-box; }
@@ -41,6 +47,18 @@ body {
 
 ::selection { color: var(--selection-fg); background: var(--selection-bg); }
 
+/* ===== 背景のジャングル ===== */
+/* 画面に固定して全部の後ろに敷く。クリックは下のリンクに通す */
+.jungle {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    display: block;
+}
+
 /* ===== プリンタの口 ===== */
 .printer {
     position: relative;
@@ -62,13 +80,16 @@ body {
 }
 
 /* ===== 感熱紙 ===== */
-/* プリンタの口から上を隠す枠。紙の影が左右と下には出るよう、上だけ切る */
+/* プリンタの口から上を隠す枠。紙の影が左右と下には出るよう、上だけ切る。
+   影は紙ではなくここに付ける（紙はギザギザを mask で切るので、紙に付けた影は消えてしまう） */
 .tray {
     width: min(100%, 312px);
     margin-top: -22px;
     clip-path: inset(0 -24px -24px -24px);
+    filter: drop-shadow(0 6px 10px var(--shadow));
 }
 
+/* 下端のギザギザ（ちぎった跡）は mask で切り抜く。背景が動くので、色で塗るとそこだけ浮いてしまう */
 .paper {
     position: relative;
     width: 100%;
@@ -76,20 +97,12 @@ body {
     background: var(--paper);
     font-size: 13px;
     line-height: 1.75;
-    filter: drop-shadow(0 6px 10px var(--shadow));
-}
-
-/* 紙の下端のギザギザ（ちぎった跡） */
-.paper::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 8px;
-    background:
-        linear-gradient(-45deg, var(--bg) 4px, transparent 0) 0 0 / 10px 8px repeat-x,
-        linear-gradient(45deg, var(--bg) 4px, transparent 0) 0 0 / 10px 8px repeat-x;
+    -webkit-mask:
+        linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat,
+        conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) bottom / 10px 8px repeat-x;
+    mask:
+        linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat,
+        conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) bottom / 10px 8px repeat-x;
 }
 
 .paper p { margin: 0; }
@@ -182,3 +195,22 @@ footer {
 
 footer a:any-link { color: var(--accent); text-decoration: none; }
 footer a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* 動く背景の上でも読めるよう、ボタンとフッターの後ろにだけ背景色を薄く敷く。
+   縁は大きくぼかして、箱には見せない */
+.reprint, footer {
+    position: relative;
+    isolation: isolate;
+    text-shadow: 0 0 6px var(--bg), 0 0 2px var(--bg);
+}
+
+.reprint::before, footer::before {
+    content: "";
+    position: absolute;
+    inset: -10px -18px;
+    z-index: -1;
+    background: var(--scrim);
+    border-radius: 24px;
+    filter: blur(12px);
+    pointer-events: none;
+}
