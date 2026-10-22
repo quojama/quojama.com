@@ -5,7 +5,7 @@
  */
 :root {
     /* 台（pistachio-on-vss の SETUPTOOLS テーマの背景とアクセント） */
-    --bg: #202020;
+    --bg: #202020;  /* 変えたら layouts/default.html の theme-color も揃える */
     --accent: #e5b62f;
     --accent-hover: #00ff08;
     --muted: #5f7f99;
@@ -97,12 +97,11 @@ body {
     background: var(--paper);
     font-size: 13px;
     line-height: 1.75;
-    -webkit-mask:
+    --tear:
         linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat,
         conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) bottom / 10px 8px repeat-x;
-    mask:
-        linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat,
-        conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) bottom / 10px 8px repeat-x;
+    -webkit-mask: var(--tear);
+    mask: var(--tear);
 }
 
 .paper p { margin: 0; }
@@ -132,7 +131,7 @@ h1 {
 }
 
 .center { text-align: center; }
-.thanks { margin-top: 8px !important; }
+.paper .thanks { margin-top: 8px; }
 
 /* 左右に振り分ける行（日時と番号、点数と金額など） */
 .row, .paper li {
@@ -220,8 +219,8 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 /* ===== 404（404.md） ===== */
 /* レシートの頭に大きく「404」を印字して、エラーだと一目で分かるようにする */
-.error-code {
-    margin: 4px 0 0 !important;
+.paper .error-code {
+    margin: 4px 0 0;
     font-size: 48px;
     font-weight: 600;
     line-height: 1.2;
@@ -240,7 +239,7 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
     letter-spacing: 0.1em;
 }
 
-.news #news-body { margin-bottom: 10px; }
+#news-body { margin-bottom: 10px; }
 
 /* 空行で分けた段落どうしは少し空け、行末の2スペース（<br>）の改行は詰めたままにする */
 .news p + p { margin-top: 0.6em; }
