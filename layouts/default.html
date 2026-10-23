@@ -37,7 +37,7 @@
     <!-- 本文は等幅の M PLUS 1 Code、絵文字は白黒の Noto Emoji で感熱紙っぽく -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;600&family=Noto+Emoji&display=swap" rel="stylesheet" />
     <!-- CSS を変えたら ?v= を変えて、古い CSS のキャッシュと組み合わさらないようにする -->
-    <link rel="stylesheet" href="/style.css?v=11" />
+    <link rel="stylesheet" href="/style.css?v=12" />
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
     {{^title}}
@@ -99,11 +99,13 @@
         <p class="row"><span>お預り</span><span id="receipt-paid"></span></p>
         <p class="row"><span>おつり</span><span id="receipt-change"></span></p>
         <hr />
-        <!-- お知らせ欄（コンビニのレシートの割引券のところ）。中身は news.md で、空なら出さない -->
-        <div class="news" id="news" hidden>
-            <div id="news-body"></div>
+        <!-- お知らせ欄（コンビニのレシートの割引券のところ）。中身は partials/news.md で、空なら欄ごと出さない -->
+        {{#partials.news}}
+        <div class="news">
+            <div class="news-body">{{{partials.news}}}</div>
             <hr />
         </div>
+        {{/partials.news}}
         <img class="qr" src="/qr.png" width="25" height="25" alt="quojama.com の QR コード" />
         <p class="center">quojama.com</p>
         <p class="center thanks">またお越しください</p>
@@ -212,19 +214,8 @@
             };
 
             $("reprint").addEventListener("click", print);
-            // news.md は layouts/news.html で中身だけの news.html になるので、それを読んで差し込む。
-            // 紙の高さが変わるので印字の前に入れる。遅いときは待たずにお知らせなしで刷る
-            const news = Promise.race([
-                fetch("/news.html").then((r) => (r.ok ? r.text() : "")).then((html) => {
-                    if (!html.trim()) return;
-                    $("news-body").innerHTML = html;
-                    $("news").hidden = false;
-                }),
-                new Promise((resolve) => setTimeout(resolve, 2000)),
-            ]).catch(() => {});
-
             // フォントが読み込まれて紙の高さが決まってから送り出す
-            Promise.all([document.fonts?.ready, news]).then(print);
+            Promise.resolve(document.fonts?.ready).then(print);
         })();
     </script>
     <!-- JS を変えたら ?v= を変える -->
