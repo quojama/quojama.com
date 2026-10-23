@@ -10,6 +10,7 @@ https://quojama.com/ の個人サイト。VSS でビルドし GitHub Pages で�
 - `partials/news.md` はレシートのお知らせ欄（おつりと QR コードの間）。VSS の Markdown 部品として、ビルド時にテンプレートの `{{{partials.news}}}` へ差し込まれる。空にするかファイルを消すと欄ごと出ない。`partials/` は VSS の予約ディレクトリで、ここに置いた Markdown は単独のページにならない。
 - `404.md` は `dist/404.html` になる（GitHub Pages が見つからない URL で返す）。どの階層の URL でも返されるので、テンプレートから読み込むものは `/style.css` のように `/` から書く。frontmatter に `title` を書いたページは noindex になり、canonical と JSON-LD を出さない。
 - リンクや SNS を増減するときは `index.md`、`layouts/default.html` の JSON-LD（`sameAs`）、`static/llms.txt` の3か所を揃える。品目の値段とお預りは印刷のたびにテンプレートの JS がランダムにつける（`<span class="price">¥404</span>` と書いた品目は固定）。
+- アクセス解析は GA4（gtag.js を直接。GTM は使わない）。測定 ID は `layouts/default.html` の `<head>` に1か所だけ書き、`quojama.com` で開いたときだけ読み込む。外部リンクのクリックは GA4 の拡張計測で自動で取れ、「もう一枚印刷する」は `reprint` イベントで送る。
 - `dist/` と `vss` バイナリはビルド生成物なので編集・コミットしない。
 - 確認は `make setup && make build`（Windows は `make setup-win && make build-win`、Mac は `make setup-mac && make build`）。
 - 独自ドメイン quojama.com は GitHub Pages の Settings → Pages（Custom domain）で設定済み。Actions デプロイなので `static/CNAME` は GitHub には読まれない。DNS はムームードメインのムームーDNS（A ×4 と www の CNAME）。

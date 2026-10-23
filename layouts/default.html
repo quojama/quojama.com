@@ -40,6 +40,21 @@
     <link rel="stylesheet" href="/style.css?v=12" />
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
+    <!-- Google アナリティクス（GA4）。ローカルのプレビュー（localhost）は数えないよう、本番のドメインでだけ読み込む -->
+    <script>
+        (() => {
+            const id = "G-4Q4MTHS1CP";
+            if (location.hostname !== "quojama.com") return;
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { dataLayer.push(arguments); };
+            gtag("js", new Date());
+            gtag("config", id);
+            const s = document.createElement("script");
+            s.async = true;
+            s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+            document.head.appendChild(s);
+        })();
+    </script>
     {{^title}}
     <!-- 検索エンジンや AI 向けのプロフィール。sameAs は index.md の Social と揃える -->
     <script type="application/ld+json">
@@ -213,7 +228,11 @@
                 paper.style.transform = "translateY(0)";
             };
 
-            $("reprint").addEventListener("click", print);
+            $("reprint").addEventListener("click", () => {
+                print();
+                // 何枚刷られたかを GA4 で数える（GA を読み込んでいないときは何もしない）
+                window.gtag?.("event", "reprint");
+            });
             // フォントが読み込まれて紙の高さが決まってから送り出す
             Promise.resolve(document.fonts?.ready).then(print);
         })();
