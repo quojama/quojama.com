@@ -41,20 +41,41 @@
     <!-- 印字が始まるまでレシートを隠しておく（スクリプトが動かないときは最初から全部見える） -->
     <script>document.documentElement.classList.add("before-print");</script>
     {{^title}}
-    <!-- 検索エンジンや AI 向けのプロフィール。sameAs は index.md の Social と揃える -->
+    <!-- 検索エンジンや AI 向けのプロフィール。sameAs は index.md の Social と揃える。
+         WebSite はサイト名（検索結果の上に出る名前）、Person は本名の表記ゆれと読みを教える -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "ProfilePage",
-        "url": "{{base_url}}",
-        "inLanguage": "ja",
-        "mainEntity": {
-            "@type": "Person",
-            "name": "Yuki Koyama",
-            "alternateName": "quojama",
-            "url": "{{base_url}}",
-            "image": "{{base_url}}og.png",
-            "sameAs": [
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": "{{base_url}}#website",
+                "url": "{{base_url}}",
+                "name": "{{site_title}}",
+                "inLanguage": "ja",
+                "publisher": { "@id": "{{base_url}}#person" }
+            },
+            {
+                "@type": "ProfilePage",
+                "@id": "{{base_url}}#profile",
+                "url": "{{base_url}}",
+                "name": "小山 雄規 / Yuki Koyama (quojama)",
+                "inLanguage": "ja",
+                "isPartOf": { "@id": "{{base_url}}#website" },
+                "mainEntity": { "@id": "{{base_url}}#person" }
+            },
+            {
+                "@type": "Person",
+                "@id": "{{base_url}}#person",
+                "name": "小山 雄規",
+                "alternateName": ["小山雄規", "こやま ゆうき", "コヤマ ユウキ", "Yuki Koyama", "Koyama Yuki", "quojama"],
+                "familyName": "小山",
+                "givenName": "雄規",
+                "birthDate": "1987",
+                "homeLocation": { "@type": "Place", "name": "東京都台東区" },
+                "url": "{{base_url}}",
+                "image": "{{base_url}}og.png",
+                "sameAs": [
                 "https://www.instagram.com/quojama/",
                 "https://x.com/quojama",
                 "https://github.com/quojama",
@@ -62,8 +83,9 @@
                 "https://www.strava.com/athletes/186208570",
                 "https://www.yamareco.com/modules/yamareco/userinfo-950394-data.html",
                 "https://www.mixcloud.com/quojama/"
-            ]
-        }
+                ]
+            }
+        ]
     }
     </script>
     {{/title}}

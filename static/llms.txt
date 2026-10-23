@@ -1,8 +1,8 @@
 # quojama.com
 
-> Yuki Koyama（quojama）の個人サイト。プロフィールと、各サービスへのリンクを載せている。
+> 小山 雄規（こやま ゆうき / Yuki Koyama）の個人サイト。プロフィールと、各サービスへのリンクを載せている。
 
-Yuki Koyama は1987年生まれ、東京都台東区在住。ハンドルネームは quojama。
+小山 雄規（こやま ゆうき）は1987年生まれ、東京都台東区在住。ローマ字では Yuki Koyama。ハンドルネームは quojama。
 
 ## Links
 
