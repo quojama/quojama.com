@@ -1,6 +1,6 @@
 ## About
 
-Yuki Koyama
+小山 雄規 / Yuki KOYAMA
 
 1987年生まれ。東京都台東区在住。
 
