@@ -230,7 +230,7 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 .error-message { font-size: 15px; font-weight: 600; }
 
-/* ===== お知らせ欄（news.md） ===== */
+/* ===== お知らせ欄（partials/news.md） ===== */
 /* 品目の見出しより一段強く。太く大きくして、上下を少し空ける */
 .news h2 {
     margin: 10px 0 4px;
@@ -239,7 +239,7 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
     letter-spacing: 0.1em;
 }
 
-#news-body { margin-bottom: 10px; }
+.news-body { margin-bottom: 10px; }
 
 /* 空行で分けた段落どうしは少し空け、行末の2スペース（<br>）の改行は詰めたままにする */
 .news p + p { margin-top: 0.6em; }

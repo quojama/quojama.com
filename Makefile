@@ -1,11 +1,11 @@
 # VSS のバージョンは固定する（latest だと破壊的変更がそのまま本番に入るため）
 # 上げるときは VSS_VERSION と VSS_SHA256_* を一緒に更新する
 # （ハッシュは gh api repos/veltiosoft/vss/releases/tags/<版> -q '.assets[] | "\(.name) \(.digest)"' で見られる）
-VSS_VERSION ?= v0.18.0
+VSS_VERSION ?= v0.19.1
 VSS_RELEASE_URL = https://github.com/veltiosoft/vss/releases/download/$(VSS_VERSION)
-VSS_SHA256_LINUX_AMD64 ?= d1065558a73e454d457aa080d4fa73f7560f4b94e2daaf3668df1acd719ad2d3
-VSS_SHA256_DARWIN_ARM64 ?= 065cb2c56ee82b27b0cd622cdc3c69ac39de2ea8e1cfa64ce19663af569c8a0f
-VSS_SHA256_WINDOWS_AMD64 ?= 400e3f962187ab7389d90c767d96db92d2590db48d9b5d3139d607279041758c
+VSS_SHA256_LINUX_AMD64 ?= 8885e4403c9b298ad420c1580d9f4f2ad629f7cc662b71c7fc12b6caaccf1520
+VSS_SHA256_DARWIN_ARM64 ?= 1b5e9fb13c7eaa5868d4e5e6c52c6454398860b6ec54c4f1e0626f49eb9d7faa
+VSS_SHA256_WINDOWS_AMD64 ?= f83cbecb589b9dbf1a68324f582a7363c786032d52b7afbb12fe4e3bf1e3ae8e
 
 .PHONY: clean setup setup-mac setup-win build build-win serve serve-win
 
