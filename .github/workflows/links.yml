@@ -1,0 +1,27 @@
+name: Check links
+
+# 外部リンクが切れていないか月に一度確かめる。切れていたらジョブが失敗し、GitHub から通知が来る
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lychee:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Check links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          # 品目とお知らせ、AI 向けの llms.txt に書いたリンク。
+          # Instagram と X はクローラーを弾くので 403 / 429 も通す
+          args: >-
+            --no-progress
+            --accept 200..=299,403,429
+            index.md partials/*.md static/llms.txt
+          fail: true

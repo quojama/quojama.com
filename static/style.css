@@ -243,3 +243,39 @@ footer a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 /* 空行で分けた段落どうしは少し空け、行末の2スペース（<br>）の改行は詰めたままにする */
 .news p + p { margin-top: 0.6em; }
+
+/* ===== 本当に印刷するとき（Ctrl+P） ===== */
+/* 台・プリンタ・ボタン・フッターは出さず、レシートの紙だけを上寄せで刷る。
+   紙の地色は刷らない（白い紙に印字だけ）ので、ちぎった跡の代わりに下端へ切り取り線を引く */
+@media print {
+    @page { margin: 10mm; }
+
+    body {
+        min-height: 0;
+        padding: 0;
+        background: none;
+    }
+
+    .jungle, .printer, .reprint, footer { display: none; }
+
+    /* そのままだと A4 に収まらないので縮める。紙の幅が本物のレシート（58mm）くらいになる */
+    .tray {
+        margin-top: 0;
+        zoom: 0.72;
+        clip-path: none;
+        filter: none;
+    }
+
+    .paper {
+        background: none;
+        -webkit-mask: none;
+        mask: none;
+        border-bottom: 1px dashed var(--rule);
+        break-inside: avoid;
+        /* 印字の途中で刷っても、紙が送り切った位置で出るように */
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .before-print .paper { visibility: visible; }
+}
